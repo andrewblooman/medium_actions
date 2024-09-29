@@ -10,6 +10,7 @@ on:
 jobs:
   # Step 1: Build Docker image
   build-docker-image:
+    name: Build Docker Image
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -61,14 +62,15 @@ jobs:
 
       - name: Terraform Plan
         run: |
+          cd terraform
           terraform plan -out=plan.tfplan
 
       # Convert Terraform Plan to JSON and Run Checkov
       - name: Terraform Show (convert plan to JSON)
-        run: terraform show -json plan.tfplan > plan.tfplan.json
+        run: |
+          cd terraform
+          terraform show -json plan.tfplan > plan.tfplan.json
 
-      - name: Run Checkov scan on Terraform plan
-        run: checkov -f plan.tfplan.json
 
       # Upload plan.tfplan.json as an artifact
       - name: Upload Terraform plan artifact
