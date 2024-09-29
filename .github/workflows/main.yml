@@ -15,10 +15,13 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
       - name: Build Docker image
         run: docker build -t my-docker-image .
+
       - name: Save Docker image as artifact
         run: docker save my-docker-image | gzip > my-docker-image.tar.gz
+
       - name: Upload Docker image artifact
         uses: actions/upload-artifact@v3
         with:
@@ -35,8 +38,10 @@ jobs:
       uses: actions/download-artifact@v3
       with:
         name: docker-image
+
     - name: Load Docker image
       run: gunzip -c my-docker-image.tar.gz | docker load
+
     - name: Run Trivy scan
       uses: aquasecurity/trivy-action@master
       with:
@@ -128,7 +133,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       AWS_REGION: 'eu-west-1'  
-    needs: checkov-scan
+    needs: tfsec-scan
     if: github.event_name == 'workflow_dispatch'  # Ensure this only runs manually
     steps:
       - name: Checkout code
