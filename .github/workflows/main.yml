@@ -98,7 +98,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2 
-        
+
       - name: Download Terraform plan artifact
         uses: actions/download-artifact@v3
         with:
@@ -110,7 +110,9 @@ jobs:
 
       # Run Checkov scan on the downloaded Terraform plan JSON
       - name: Run Checkov scan
-        run: checkov -f terraform/plan.tfplan.json || true
+        run: |
+          cd terraform
+          checkov -f plan.tfplan.json || true
   
   # Step 5: TFSEC Scan
   tfsec-scan:
