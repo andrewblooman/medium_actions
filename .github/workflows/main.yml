@@ -14,9 +14,15 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
       - name: Build Docker image
         run: docker build -t my-docker-image .
+      - name: Save Docker image as artifact
+        run: docker save my-docker-image | gzip > my-docker-image.tar.gz
+      - name: Upload Docker image artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: docker-image
+          path: my-docker-image.tar.gz
 
   # Step 2: Docker Image Security Scan with Trivy
   trivy-scan:
@@ -24,13 +30,16 @@ jobs:
     runs-on: ubuntu-latest
     needs: build-docker-image  # Ensure Docker image is built first
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Run Trivy
-        uses: aquasecurity/trivy-action@master
-        with:
-          image-ref: 'my-docker-image'
+    - name: Download Docker image artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: docker-image
+    - name: Load Docker image
+      run: gunzip -c my-docker-image.tar.gz | docker load
+    - name: Run Trivy scan
+      uses: aquasecurity/trivy-action@master
+      with:
+        image-ref: 'my-docker-image'
 
   # Step 3: Run Terraform Plan and Checkov Scan
   terraform-setup:
