@@ -19,7 +19,7 @@ jobs:
       - name: Save Docker image as artifact
         run: docker save my-docker-image | gzip > my-docker-image.tar.gz
       - name: Upload Docker image artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: docker-image
           path: my-docker-image.tar.gz
@@ -31,7 +31,7 @@ jobs:
     needs: build-docker-image  # Ensure Docker image is built first
     steps:
     - name: Download Docker image artifact
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v3
       with:
         name: docker-image
     - name: Load Docker image
