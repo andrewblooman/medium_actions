@@ -107,9 +107,6 @@ jobs:
       # Run Checkov scan on the downloaded Terraform plan JSON
       - name: Run Checkov scan
         run: |
-          ls  
-          cd terraform
-          ls
           checkov -f plan.tfplan.json || true
   
   # Step 5: TFSEC Scan
