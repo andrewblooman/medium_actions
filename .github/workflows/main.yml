@@ -106,7 +106,7 @@ jobs:
           tfsec --version
   
       - name: 'tfsec'
-        run: 
+        run: |
           cd terraform
           tfsec .
 
