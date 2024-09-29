@@ -98,14 +98,16 @@ jobs:
     steps:
       - name: Download Terraform plan artifact
         uses: actions/download-artifact@v3
-        
+        with:
+          name: terraform-plan-json
+
       # Install Checkov
       - name: Install Checkov
         run: pip install checkov
 
       # Run Checkov scan on the downloaded Terraform plan JSON
       - name: Run Checkov scan
-        run: checkov -f plan.tfplan.json || true 
+        run: checkov -f terraform/plan.tfplan.json || true
   
   # Step 5: TFSEC Scan
   tfsec-scan:
