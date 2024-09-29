@@ -112,11 +112,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: tfsec-scan  # Wait for Terraform Plan to complete
     steps:
-      - name: Download Terraform plan artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: terraform-plan-json
-
       # Install Checkov
       - name: Install Checkov
         run: pip install checkov
