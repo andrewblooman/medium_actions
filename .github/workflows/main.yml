@@ -63,6 +63,7 @@ jobs:
       - name: Terraform Plan
         run: |
           cd terraform
+          aws sts get-caller-identity
           terraform plan -out=plan.tfplan
 
       # Convert Terraform Plan to JSON and Run Checkov
