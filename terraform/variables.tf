@@ -5,10 +5,10 @@ variable "region" {
 
 variable "vpc_name" {
   type    = string
-  default = "common-tooling-vpc"
+  default = "[INSERT_NAME]"
 }
 
 variable "subnet_name" {
   type    = string
-  default = "common-tooling-subnet-private1-eu-west-1a"
+  default = "[INSERT_NAME]"
 }
