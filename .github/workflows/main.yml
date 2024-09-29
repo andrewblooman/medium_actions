@@ -93,10 +93,8 @@ jobs:
     env:
       TFSEC_VERSION: '1.28.1' 
     steps:
-      - name: Download Terraform plan artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: terraform-plan-json
+      - name: Checkout code
+        uses: actions/checkout@v2
 
       - name: 'Install tfsec'
         run: |
