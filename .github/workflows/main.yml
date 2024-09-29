@@ -106,7 +106,9 @@ jobs:
           tfsec --version
   
       - name: 'tfsec'
-        run: tfsec terraform/   
+        run: 
+          ls
+          tfsec terraform  
 
 # Step 5: Checkov Scan
   checkov-scan:
