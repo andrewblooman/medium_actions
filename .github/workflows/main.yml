@@ -85,11 +85,32 @@ jobs:
           name: terraform-plan-json
           path: terraform/plan.tfplan.json
 
-# Step 4: Checkov Scan
+  # Step 4: TFSEC Scan
+  tfsec-scan:
+    name: TFSEC Scan
+    runs-on: ubuntu-latest
+    needs: terraform-plan 
+    steps:
+      - name: Download Terraform plan artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: terraform-plan-json
+
+      - name: 'Install tfsec'
+        run: |
+          curl -sLo tfsec https://github.com/aquasecurity/tfsec/releases/download/v${{ env.TFSEC_VERSION }}/tfsec-linux-amd64
+          chmod +x tfsec
+          mv tfsec /usr/local/bin/
+          tfsec --version
+  
+      - name: 'tfsec'
+        run: tfsec terraform/   
+
+# Step 5: Checkov Scan
   checkov-scan:
     name: Checkov Scan
     runs-on: ubuntu-latest
-    needs: terraform-plan  # Wait for Terraform Plan to complete
+    needs: tfsec-scan  # Wait for Terraform Plan to complete
     steps:
       - name: Download Terraform plan artifact
         uses: actions/download-artifact@v3
@@ -105,7 +126,7 @@ jobs:
         run: checkov -f plan.tfplan.json
 
           
- # Step 5: Manual Deployment (Terraform Apply)
+ # Step 6: Manual Deployment (Terraform Apply)
   terraform-apply:
     name: Terraform Apply (Manual Step)
     runs-on: ubuntu-latest
