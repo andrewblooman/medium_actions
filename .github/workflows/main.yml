@@ -102,7 +102,7 @@ jobs:
 
       # Run Checkov scan on the downloaded Terraform plan JSON
       - name: Run Checkov scan
-        run: checkov -f terraform/plan.tfplan.json
+        run: checkov -f plan.tfplan.json
 
           
  # Step 5: Manual Deployment (Terraform Apply)
@@ -123,7 +123,7 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
-          
+
       - name: Terraform Apply
         run: |
           cd terraform
